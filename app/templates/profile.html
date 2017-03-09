@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Add Profile</h1>
+    <hr/>
+    <p>Fill in the form to create your profile</p>
+    <br/>
+    <br/>
+
+    <form action="{{ url_for('profile') }}" method="post"  enctype="multipart/form-data">
+        <div>
+            <label for="fname">First Name <span style="color:red;">[Required]</span></label>
+            <p>Please enter your first name</p>
+            <input type="text" id="fname" name="fname" required/>
+        </div>
+        <br/>
+
+        <div>
+            <label for="lname">Last Name <span style="color:red;">[Required]</span></label>
+            <p>Please enter your last name</p>
+            <input type="text" id="lname" name="lname" required/>
+        </div>
+        <br/>
+
+        <div>
+            <label for="username">Username <span style="color:red;">[Required]</span></label>
+            <p>Please enter your username</p>
+            <input type="text" id="username" name="username" required/>
+        </div>
+        <br/>
+
+        <div>
+            <label for="age">Age <span style="color:red;">[Required]</span></label>
+            <p>Please enter your age</p>
+            <input type="number" id="age" name="age" min="1" max="110" required/>
+        </div>
+        <br/>
+
+        <div>
+            <label for="gender">Gender <span style="color:red;">[Required]</span></label>
+            <p>Please select your gender</p>
+            <input type="radio" id="gender1" name="gender" value="male" required/>Male
+            <input type="radio" id="gender2" name="gender" value="female" required/>Female
+        </div>
+        <br/>
+
+        <div>
+            <label for="file">Profile Picture <span style="color:red;">[Required]</span></label>
+            <p>Please upload a profile photo</p>
+            <input type ="file" id="file" name="file" required></input>
+        </div>
+        <br/>
+
+        <div>
+            <label for="bio">Biography <span style="color:red;">[Required]</span></label>
+            <p>Please enter a short biography</p>
+            <textarea id="bio" name="bio" required></textarea>
+        </div>
+        <br/>
+        <button class="btn btn-lg btn-default" style="background-color: dodgerblue;color:white;"type="submit">Submit</button>
+    </form>
+{% endblock %}
