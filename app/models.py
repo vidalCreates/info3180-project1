@@ -27,4 +27,4 @@ class UserProfile(db.Model):
             return str(self.userid)  # python 3 support
 
     def __repr__(self):
-        return '<User %r %r>' % (self.username)
+        return '<User %r>' % (self.username)

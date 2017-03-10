@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block main %}
+    {% include 'flash_messages.html' %}
     <h1>New Profile</h1>
     <hr/>
     <p>
@@ -54,7 +55,7 @@
             <input type ="file" id="file" name="file" required></input>
         </div>
 
-        <div class="form-element-biography">
+        <div class="form-element">
             <label for="bio"><span  class="required">* </span>Biography</label>
             <p>Please enter a short biography</p>
             <textarea id="bio" name="bio" required></textarea>
