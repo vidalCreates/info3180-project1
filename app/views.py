@@ -81,36 +81,36 @@ def profile():
 @app.route('/profiles', methods=['GET', 'POST'])
 def profiles():
     userlist=[]
+
+    #get all profiles from database
     users = UserProfile.query.filter_by().all()
-    #if request.headers['Content-Type'] == 'application/json':
+
     if request.method == 'POST':
+        #create list of profiles in json format
         for user in users:
             userlist += [{'username':user.username, 'userid':user.userid}]
 
-        try:
-            return jsonify(users=userlist)
-        except:
-            print 'no profiles found'
+        return jsonify(users=userlist)
     elif request.method == 'GET':
         return render_template('profiles.html', profiles=users)
-    #flash('Content-Type Error','danger')
-    #return redirect(url_for('home'))
+
+    return redirect(url_for('home'))
 
 
 @app.route('/profile/<userid>', methods=['GET', 'POST'])
 def userprofile(userid):
-    #if request.headers['Content-Type'] == 'application/json':
+    userjson={}
+    #get specific profile from database
     user = UserProfile.query.filter_by(userid=userid).first()
     if request.method == 'POST':
-        try:
-            return jsonify(user.userid, user.username, user.profile_image, user.gender, user.age, user.created_on)
-        except:
-            return redirect(url_for('home'))
-    elif request.method == 'GET':
+        #create json formatted data
+        userjson={'userid':user.userid, 'username':user.username, 'profile_image':user.profile_image, 'gender':user.gender, 'age':user.age, 'created_on':user.created_on}
+        return jsonify(userjson)
+
+    elif request.method == 'GET' and user:
         return render_template('profile-individual.html', profile=user)
 
-    #flash('Content-Type Error','danger')
-    #return redirect(url_for('home'))
+    return render_template('profile.html')
 
 
 @app.after_request
