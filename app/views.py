@@ -37,7 +37,7 @@ def about():
 ###
 # The functions below should be applicable to all Flask apps.
 ###
-@app.route('/profile', methods=['POST','GET'])
+@app.route('/profile', methods=['POST', 'GET'])
 def profile():
     if request.method == 'POST':
         #handling the random unique id
@@ -53,9 +53,10 @@ def profile():
 
         #handleing the file upload
         profile_image = request.files['file']
-        file_folder = app.config['UPLOAD_FOLDER']
-        filename = secure_filename(profile_image.filename)
-        profile_image.save(os.path.join(file_folder, filename))
+        if profile_image:
+            file_folder = app.config['UPLOAD_FOLDER']
+            filename = secure_filename(profile_image.filename)
+            profile_image.save(os.path.join(file_folder, filename))
 
         #handling the time created
         created_on = time.strftime('%Y/%b/%d')
@@ -77,7 +78,7 @@ def profile():
     return render_template('profile.html')
 
 
-@app.route('/profiles', methods=['GET','POST'])
+@app.route('/profiles', methods=['GET', 'POST'])
 def profiles():
     userlist=[]
     users = UserProfile.query.filter_by().all()
@@ -91,21 +92,12 @@ def profiles():
         except:
             print 'no profiles found'
     elif request.method == 'GET':
-        for user in users:
-            userlist += [{'username':user.username,
-                          'userid':user.userid,
-                          'created_on':user.created_on,
-                          'profile_image':user.profile_image,
-                          'gender':user.gender,
-                          'age':user.age,
-                          'biography':user.biography}]
-
-        return render_template('profiles.html', profiles=userlist)
+        return render_template('profiles.html', profiles=users)
     #flash('Content-Type Error','danger')
     #return redirect(url_for('home'))
 
 
-@app.route('/profile/<userid>', methods=['GET','POST'])
+@app.route('/profile/<userid>', methods=['GET', 'POST'])
 def userprofile(userid):
     #if request.headers['Content-Type'] == 'application/json':
     user = UserProfile.query.filter_by(userid=userid).first()
