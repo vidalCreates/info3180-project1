@@ -7,12 +7,10 @@
 
 * go to your `command  prompt` *(or `terminal`)*
 * `cd` to the desired `directory/folder`
+* use the `clone` command:
 ```
-    cd path/to/directory
-```
-* use the following command:
-```
-   git clone https://github.com/vidalCreates/info3180-project1.git
+   $ cd path/to/directory
+   $ git clone https://github.com/vidalCreates/info3180-project1.git
 ```
 ## Set Up
 * `cd` to `info3180-project1`
@@ -26,3 +24,9 @@
    $ python run.py
 ```
 * then open your browser and type the `url` : *`localhost:8080`*
+
+##Usage
+* Navigate to the `New Profile` tab of the website
+* Create a new profile and `submit`
+* Navigate to the  `Profiles` tab of the website
+* Click either the `GET` or `POST` button to view the appropriate responses
