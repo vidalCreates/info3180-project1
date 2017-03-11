@@ -5,15 +5,17 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 '''
 
-from app import app
-from app import db
-from app.models import UserProfile
-from flask import render_template, request, redirect, url_for, flash, jsonify
-from werkzeug.utils import secure_filename
-
 import time
 import uuid
 import os
+
+from app import app
+from app import db
+from app.models import UserProfile
+from flask import render_template, request, redirect, url_for, jsonify, flash
+from werkzeug.utils import secure_filename
+
+
 
 ###
 # Routing for your application.
@@ -59,26 +61,46 @@ def profile():
         created_on = time.strftime('%Y/%b/%d')
 
         #creating user object and inserting into database
-        user = UserProfile(userid=userid,first_name=f_name,last_name=l_name,username=user_name,biography=biography,age=age,gender=gender,created_on=created_on,profile_image=profile_image.filename)
+        user = UserProfile(userid=userid,
+                           first_name=f_name,
+                           last_name=l_name,
+                           username=user_name,
+                           biography=biography,
+                           age=age,
+                           gender=gender,
+                           created_on=created_on,
+                           profile_image=profile_image.filename)
         db.session.add(user)
         db.session.commit()
         #quit()
-        flash('Profile added','success')
         return redirect(url_for('home'))
     return render_template('profile.html')
 
 
 @app.route('/profiles', methods=['GET','POST'])
 def profiles():
-    #if request.headers['Content-Type'] == 'application/json':
     userlist=[]
     users = UserProfile.query.filter_by().all()
-    try:
+    #if request.headers['Content-Type'] == 'application/json':
+    if request.method == 'POST':
         for user in users:
-            userlist += [{'username':user.username,'userid':user.userid}]
-        return jsonify(users=userlist)
-    except:
-        print 'no profiles found'
+            userlist += [{'username':user.username, 'userid':user.userid}]
+
+        try:
+            return jsonify(users=userlist)
+        except:
+            print 'no profiles found'
+    elif request.method == 'GET':
+        for user in users:
+            userlist += [{'username':user.username,
+                          'userid':user.userid,
+                          'created_on':user.created_on,
+                          'profile_image':user.profile_image,
+                          'gender':user.gender,
+                          'age':user.age,
+                          'biography':user.biography}]
+
+        return render_template('profiles.html', profiles=userlist)
     #flash('Content-Type Error','danger')
     #return redirect(url_for('home'))
 
@@ -87,21 +109,16 @@ def profiles():
 def userprofile(userid):
     #if request.headers['Content-Type'] == 'application/json':
     user = UserProfile.query.filter_by(userid=userid).first()
-    try:
-        return jsonify(user.userid, user.username, user.profile_image, user.gender, user.age, user.created_on)
-    except:
-        flash('user does not exist','danger')
-        return redirect(url_for('home'))
+    if request.method == 'POST':
+        try:
+            return jsonify(user.userid, user.username, user.profile_image, user.gender, user.age, user.created_on)
+        except:
+            return redirect(url_for('home'))
+    elif request.method == 'GET':
+        return render_template('profile-individual.html', profile=user)
 
     #flash('Content-Type Error','danger')
     #return redirect(url_for('home'))
-
-
-@app.route('/<file_name>.txt')
-def send_text_file(file_name):
-    '''Send your static text file.'''
-    file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
 
 
 @app.after_request

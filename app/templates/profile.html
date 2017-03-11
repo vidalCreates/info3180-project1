@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block main %}
-    {% include 'flash_messages.html' %}
     <h1>New Profile</h1>
     <hr/>
     <p>
@@ -50,9 +49,9 @@
         </div>
 
         <div class="form-element">
-            <label for="file"><span  class="required">* </span>Profile Picture</label>
+            <label for="file">Profile Picture [optional]</label>
             <p>Please upload a profile photo</p>
-            <input type ="file" id="file" name="file" required></input>
+            <input type ="file" id="file" name="file"></input>
         </div>
 
         <div class="form-element">
